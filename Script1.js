@@ -1,7 +1,7 @@
 function fibonacci(){
     var termo = parseInt(document.getElementById('numeroFibonacci').value);
     var respostaFibonacci = document.getElementById('respostaFibonacci');
-    
+    document.getElementById('respostaFibonacci').style.display = 'block';
     var penultimo=0, ultimo=1;
     var numero;
 
@@ -27,6 +27,7 @@ function fibonacci(){
 
 
 function faturamentoMensal(){
+    document.getElementById('respostaFaturamentoMensal').style.display = 'block';
     const SP = 67836.43;
     const RJ = 36678.66;
     const MG = 29229.88;
@@ -49,6 +50,7 @@ function faturamentoMensal(){
 
 
 function inverterString(){
+    document.getElementById('respostaStringInvertida').style.display = 'block';
     var stringRecebida = document.getElementById('stringRecebida').value;
     var respostaStringInvertida = document.getElementById('respostaStringInvertida');
 
@@ -65,32 +67,33 @@ function inverterString(){
 
 
 async function faturamentoDiario(){
- fetch ('dados.json')
- .then(response => response.json())
- .then(data =>  {
-    var total = 0
-    var dias = 0; 
-    let valorMax = -Infinity;
-    let valorMin = Infinity;
-    data.forEach(dados => {
-        if (dados.valor > 0) {
-            total+=dados.valor
-            dias++
-            if (dados.valor > valorMax){
-                valorMax=dados.valor;
-            }
-            if (dados.valor < valorMin){
-                valorMin=dados.valor;
+    document.getElementById('respostaFaturamentoDiario').style.display = 'block';
+    fetch ('dados.json')
+    .then(response => response.json())
+    .then(data =>  {
+        var total = 0
+        var dias = 0; 
+        let valorMax = -Infinity;
+        let valorMin = Infinity;
+        data.forEach(dados => {
+            if (dados.valor > 0) {
+                total+=dados.valor
+                dias++
+                if (dados.valor > valorMax){
+                    valorMax=dados.valor;
+                }
+                if (dados.valor < valorMin){
+                    valorMin=dados.valor;
             }
         }   
     });
-    let media = total/dias;
-    let diasAcimaDaMedia = 0;
-    data.forEach(dados => {
-        if (dados.valor > media) {
-            diasAcimaDaMedia++
-            }
-        });   
+        let media = total/dias;
+        let diasAcimaDaMedia = 0;
+        data.forEach(dados => {
+            if (dados.valor > media) {
+                diasAcimaDaMedia++
+                }
+            });   
     respostaFaturamentoDiario.innerHTML=
     "<p> O menor faturamento diário foi: <b>R$"+ valorMin.toLocaleString('pt-BR') +"</b> </p>" +
     "<p> O maoir faturamento diário foi: <b>R$"+ valorMax.toLocaleString('pt-BR') +"</b> </p>" +
