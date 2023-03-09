@@ -38,11 +38,11 @@ function faturamentoMensal(){
     
     respostaFaturamentoMensal.innerHTML= 
     "<p>A <b>Distribuidora</b> teve um faturamento <b>total</b> de: <b>" + total.toLocaleString('pt-BR') + "</b>"+
-    "<p><b>SP</b> teve um faturamento de: <b>" + SP.toLocaleString('pt-BR') + "</b> o qual representa aproximadamente <b>" + ((SP/total)*100).toFixed(2) + "%</b> do faturamento total</p>"+  
-    "<p><b>RJ</b> teve um faturamento de: <b>" + RJ.toLocaleString('pt-BR') + "</b> o qual representa aproximadamente <b>" + ((RJ/total)*100).toFixed(2) + "%</b> do faturamento total/p>"+
-    "<p><b>MG</b> teve um faturamento de: <b>" + MG.toLocaleString('pt-BR') + "</b> o qual representa aproximadamente <b>" + ((MG/total)*100).toFixed(2) + "%</b> do faturamento total</p>"+
-    "<p><b>ES</b> teve um faturamento de: <b>" + ES.toLocaleString('pt-BR') + "</b> o qual representa aproximadamente <b>" + ((ES/total)*100).toFixed(2) + "%</b> do faturamento total</p>"+
-    "<p><b>Outros</b> tiveram um faturamento de: <b>" + OUTROS.toLocaleString('pt-BR') + "</b> o qual representa aproximadamente <b>" + ((OUTROS/total)*100).toFixed(2) + "%</b> do faturamento total</p>"
+    "<p><b>SP</b> teve um faturamento de: <b>R$" + SP.toLocaleString('pt-BR') + "</b> o qual representa aproximadamente <b>" + ((SP/total)*100).toFixed(2) + "%</b> do faturamento total</p>"+  
+    "<p><b>RJ</b> teve um faturamento de: <b>R$" + RJ.toLocaleString('pt-BR') + "</b> o qual representa aproximadamente <b>" + ((RJ/total)*100).toFixed(2) + "%</b> do faturamento total/p>"+
+    "<p><b>MG</b> teve um faturamento de: <b>R$" + MG.toLocaleString('pt-BR') + "</b> o qual representa aproximadamente <b>" + ((MG/total)*100).toFixed(2) + "%</b> do faturamento total</p>"+
+    "<p><b>ES</b> teve um faturamento de: <b>R$" + ES.toLocaleString('pt-BR') + "</b> o qual representa aproximadamente <b>" + ((ES/total)*100).toFixed(2) + "%</b> do faturamento total</p>"+
+    "<p><b>Outros</b> tiveram um faturamento de: <b>R$" + OUTROS.toLocaleString('pt-BR') + "</b> o qual representa aproximadamente <b>" + ((OUTROS/total)*100).toFixed(2) + "%</b> do faturamento total</p>"
 
 
 }
@@ -62,3 +62,42 @@ function inverterString(){
     respostaStringInvertida.innerHTML= "A string invertida é: <b>"+ newString +"</b>"
 
 }
+
+
+async function faturamentoDiario(){
+ fetch ('dados.json')
+ .then(response => response.json())
+ .then(data =>  {
+    var total = 0
+    var dias = 0; 
+    let valorMax = -Infinity;
+    let valorMin = Infinity;
+    data.forEach(dados => {
+        if (dados.valor > 0) {
+            total+=dados.valor
+            dias++
+            if (dados.valor > valorMax){
+                valorMax=dados.valor;
+            }
+            if (dados.valor < valorMin){
+                valorMin=dados.valor;
+            }
+        }   
+    });
+    let media = total/dias;
+    let diasAcimaDaMedia = 0;
+    data.forEach(dados => {
+        if (dados.valor > media) {
+            diasAcimaDaMedia++
+            }
+        });   
+    respostaFaturamentoDiario.innerHTML=
+    "<p> O menor faturamento diário foi: <b>R$"+ valorMin.toLocaleString('pt-BR') +"</b> </p>" +
+    "<p> O maoir faturamento diário foi: <b>R$"+ valorMax.toLocaleString('pt-BR') +"</b> </p>" +
+    "<p> O Numero de dias uteis no mês é de: <b>"+ dias +"</b> uteis </p>" +
+    "<p> O faturamento médio do mês foi: <b>R$"+ media.toLocaleString('pt-BR') +"</b> </p>" +
+    "<p> O Numero de dias em que o faturamento foi maior que a média foi de: <b>"+ diasAcimaDaMedia +"</b> </p>"
+ })
+ .catch(error => console.error(error));   
+ };
+
